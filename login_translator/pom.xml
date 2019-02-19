@@ -11,12 +11,15 @@
 	</parent>
 	<artifactId>login-translator</artifactId>
 	<name>Test Translator Login</name>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<dependencies>
-		
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-client</artifactId>
+		</dependency>
 	</dependencies>
 </project>
