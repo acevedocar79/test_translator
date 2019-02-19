@@ -1,0 +1,19 @@
+version: "3"
+services:
+  mongo:
+    image: mongo
+    volumes:
+      - ./mongo:/docker-entrypoint-initdb.d
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=configuration
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - 5672:5672
+      - 15672:15672
+  redis:
+    image: redis:3.2
+    ports:
+      - 6379:6379
