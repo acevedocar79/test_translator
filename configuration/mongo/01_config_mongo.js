@@ -2,6 +2,7 @@ db.banks.insert({
 	'_id' : 1,
     'name' : 'bankTest',
     'queue' : 'testTranslator',
+    'timeWaitOfTranslatorResponse' : 120000,
     'ttlUserSession' : 300
 });
 db.routes.insert({
