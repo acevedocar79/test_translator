@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import mx.com.anzen.abanking.integration.configurations.common.util.IntegrationCommonConstants;
 import mx.com.anzen.app.abanking.common.beans.dto.UserSession;
@@ -32,20 +33,32 @@ import mx.com.anzen.app.abanking.common.beans.dto.UserSession;
 public class LoginService {
 
     @ServiceActivator(inputChannel = "login", outputChannel = IntegrationCommonConstants.MAP_RESPONSE_CHANNEL_NAME)
-    public Message<Map<String, Object>> login(Map<String, Object> input, 
-            @Headers Map<String, Object> headers,
-            @Header(IntegrationCommonConstants.ABANKING_SESSION) UserSession userSession,
-            @Header(IntegrationCommonConstants.ABANKING_MONITORING_ID) String monitoringId) {
+    public Message<Map<String, Object>> login(Map<String, Object> input,
+                                              @Headers Map<String, Object> headers,
+                                              @Header(IntegrationCommonConstants.ABANKING_MONITORING_ID) String monitoringId) {
 
+        String id_session = UUID.randomUUID().toString();
         Map<String, Object> output = new HashMap<>();
-        output.put("response", "login OK");
-
-        userSession.getSharedInfo().put("someData", "someValue");
+        output.put("id_session", id_session);
 
         return MessageBuilder
                 .withPayload(output)
                 .copyHeaders(headers)
-                .setHeader(IntegrationCommonConstants.ABANKING_SESSION, userSession)
+                .setHeader(IntegrationCommonConstants.ABANKING_SESSION, id_session)
+                .build();
+    }
+
+    @ServiceActivator(inputChannel = "logout", outputChannel = IntegrationCommonConstants.MAP_RESPONSE_CHANNEL_NAME)
+    public Message<Map<String, Object>> logout(Map<String, Object> input,
+                                               @Headers Map<String, Object> headers,
+                                               @Header(IntegrationCommonConstants.ABANKING_SESSION) String userSession,
+                                               @Header(IntegrationCommonConstants.ABANKING_MONITORING_ID) String monitoringId) {
+        Map<String, Object> output = new HashMap<>();
+        output.put("logout", true);
+
+        return MessageBuilder.withPayload(output)
+                .copyHeaders(headers)
+                .removeHeader(IntegrationCommonConstants.ABANKING_SESSION)
                 .build();
     }
 }
