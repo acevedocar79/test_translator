@@ -8,17 +8,18 @@
  */
 package mx.com.anzen.app.abanking.translator.test.service;
 
+import java.util.Map;
+
+import mx.com.anzen.abanking.integration.configurations.common.exception.TranslatorException;
+import mx.com.anzen.abanking.integration.configurations.common.util.IntegrationCommonConstants;
+import mx.com.anzen.app.abanking.common.beans.dto.security.CheckLoginRequest;
+import mx.com.anzen.app.abanking.common.beans.dto.security.CheckLoginResponse;
+
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import mx.com.anzen.abanking.integration.configurations.common.exception.TranslatorException;
-import mx.com.anzen.abanking.integration.configurations.common.util.IntegrationCommonConstants;
 
 /**
  * <p></p>
@@ -31,11 +32,11 @@ import mx.com.anzen.abanking.integration.configurations.common.util.IntegrationC
 public class CheckLoginService {
 
     @ServiceActivator(inputChannel = "checkLogin", outputChannel = IntegrationCommonConstants.MAP_RESPONSE_CHANNEL_NAME)
-    public Message<Map<String, Object>> login(Map<String, Object> input, @Headers Map<String, Object> headers) 
+    public Message<CheckLoginResponse> login(CheckLoginRequest input, @Headers Map<String, Object> headers)
             throws TranslatorException {
 
-        Map<String, Object> output = new HashMap<>();
-        output.put("response", "checkLogin OK");
+        System.out.println(input);
+        CheckLoginResponse output = CheckLoginResponse.builder().userName("Marco Antonio").build();
 
         return MessageBuilder
                 .withPayload(output).copyHeaders(headers).build();
