@@ -3,7 +3,7 @@ db.banks.insert({
     'name' : 'bankTest',
     'queue' : 'testTranslator',
     'timeWaitOfTranslatorResponse' : 120000,
-    'ttlUserSession' : 300
+    'ttlUserSession' : 900000
 });
 db.routes.insert({
 	'bankId' : 1,
