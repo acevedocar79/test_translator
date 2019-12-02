@@ -8,19 +8,21 @@
  */
 package mx.com.anzen.app.abanking.translator.test.services;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import mx.com.anzen.abanking.integration.configurations.common.util.IntegrationCommonConstants;
+import mx.com.anzen.app.abanking.common.beans.dto.security.SessionRequest;
+import mx.com.anzen.app.abanking.common.beans.dto.security.SessionResponse;
+
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import mx.com.anzen.abanking.integration.configurations.common.util.IntegrationCommonConstants;
-import mx.com.anzen.app.abanking.common.beans.dto.UserSession;
 
 /**
  * <p></p>
@@ -33,16 +35,15 @@ import mx.com.anzen.app.abanking.common.beans.dto.UserSession;
 public class LoginService {
 
     @ServiceActivator(inputChannel = "login", outputChannel = IntegrationCommonConstants.MAP_RESPONSE_CHANNEL_NAME)
-    public Message<Map<String, Object>> login(Map<String, Object> input,
-                                              @Headers Map<String, Object> headers,
-                                              @Header(IntegrationCommonConstants.ABANKING_MONITORING_ID) String monitoringId) {
+    public Message<SessionResponse> login(SessionRequest input,
+                                          @Headers Map<String, Object> headers,
+                                          @Header(IntegrationCommonConstants.ABANKING_MONITORING_ID) String monitoringId) {
 
         String id_session = UUID.randomUUID().toString();
-        Map<String, Object> output = new HashMap<>();
-        output.put("id_session", id_session);
+        SessionResponse response = SessionResponse.builder().lastAccess(new Date().getTime()).build();
 
         return MessageBuilder
-                .withPayload(output)
+                .withPayload(response)
                 .copyHeaders(headers)
                 .setHeader(IntegrationCommonConstants.ABANKING_SESSION, id_session)
                 .build();

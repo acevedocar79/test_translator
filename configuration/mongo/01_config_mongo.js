@@ -7,17 +7,17 @@ db.banks.insert({
 });
 db.routes.insert({
 	'bankId' : 1,
-	'operation' : 'CHECK_LOGIN',
+	'operation' : 'PRE_SESSION',
 	'serviceActivator' : 'checkLogin'
 });
 
 db.routes.insert({
 	'bankId' : 1,
-	'operation' : 'LOGIN',
+	'operation' : 'SESSION',
 	'serviceActivator' : 'login'
 });
 db.routes.insert({
 	'bankId' : 1,
-	'operation' : 'LOGOUT',
+	'operation' : 'DELETE_SESSION',
 	'serviceActivator' : 'logout'
 });
