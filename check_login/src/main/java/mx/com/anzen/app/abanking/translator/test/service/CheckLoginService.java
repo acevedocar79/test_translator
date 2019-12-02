@@ -12,8 +12,8 @@ import java.util.Map;
 
 import mx.com.anzen.abanking.integration.configurations.common.exception.TranslatorException;
 import mx.com.anzen.abanking.integration.configurations.common.util.IntegrationCommonConstants;
-import mx.com.anzen.app.abanking.common.beans.dto.security.CheckLoginRequest;
-import mx.com.anzen.app.abanking.common.beans.dto.security.CheckLoginResponse;
+import mx.com.anzen.app.abanking.common.beans.dto.security.PreSessionRequest;
+import mx.com.anzen.app.abanking.common.beans.dto.security.PreSessionResponse;
 
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
@@ -32,11 +32,11 @@ import org.springframework.stereotype.Service;
 public class CheckLoginService {
 
     @ServiceActivator(inputChannel = "checkLogin", outputChannel = IntegrationCommonConstants.MAP_RESPONSE_CHANNEL_NAME)
-    public Message<CheckLoginResponse> login(CheckLoginRequest input, @Headers Map<String, Object> headers)
+    public Message<PreSessionResponse> login(PreSessionRequest input, @Headers Map<String, Object> headers)
             throws TranslatorException {
 
         System.out.println(input);
-        CheckLoginResponse output = CheckLoginResponse.builder().userName("Marco Antonio").build();
+        PreSessionResponse output = PreSessionResponse.builder().userName("Marco Antonio").build();
 
         return MessageBuilder
                 .withPayload(output).copyHeaders(headers).build();
